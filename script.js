@@ -9,14 +9,14 @@ let rotation = 90;
 
 function rotateBug(step) {
 
-    if(rotation%360 !==step){
-        const currentAngle = rotation%360;
-        let diff = step-currentAngle;
-        if(diff>90 || diff<-90){
-            if(diff<0){
-                diff = 360+diff
-            }else{
-                diff = diff-360
+    if (rotation % 360 !== step) {
+        const currentAngle = rotation % 360;
+        let diff = step - currentAngle;
+        if (diff > 90 || diff < -90) {
+            if (diff < 0) {
+                diff = 360 + diff
+            } else {
+                diff = diff - 360
             }
         }
         rotation += diff
@@ -67,19 +67,102 @@ function moveTo(diretion) {
 }
 
 
+let lefTimer, rightTimer, topTimer, bottomTimer;
+let statusTimer
+const controllKeystatus = {}
+
+function isAnyControllKeyPressed() {
+    for (const key in controllKeystatus) {
+        if (controllKeystatus[key]) {
+            return true
+        }
+    }
+
+    return false
+}
+
+
 document.addEventListener('keydown', function (event) {
+    
+    if (isAnyControllKeyPressed()) {
+        switch (event.code) {
+            case 'ArrowUp':
+                if (!topTimer) {
+                    topTimer = setInterval(
+                        () => moveTo('top'),
+                        50
+                    )
+                }
+                break;
+            case 'ArrowRight':
+                if (!rightTimer) {
+                    rightTimer = setInterval(
+                        () => moveTo('right'),
+                        50
+                    )
+                }
+                break;
+            case 'ArrowLeft':
+                if (!lefTimer) {
+                    lefTimer = setInterval(
+                        () => moveTo('left'),
+                        50
+                    )
+                }
+                break;
+            case 'ArrowDown':
+                if (!bottomTimer) {
+                    bottomTimer = setInterval(
+                        () => moveTo('bottom'),
+                        50
+                    )
+                }
+                break;
+            // Add more cases if needed for other keys
+        }
+    } else {
+        switch (event.code) {
+            case 'ArrowUp':
+                moveTo('top')
+                break;
+            case 'ArrowRight':
+                moveTo('right')
+                break;
+            case 'ArrowLeft':
+                moveTo('left')
+                break;
+            case 'ArrowDown':
+                moveTo('bottom')
+                break;
+            // Add more cases if needed for other keys
+        }
+    }
+    controllKeystatus[event.code] = true
+
+});
+
+document.addEventListener('keyup', function (event) {
+    clearTimeout(statusTimer)
+    statusTimer =  setTimeout(
+        ()=>{controllKeystatus[event.code] = false},
+        300
+    )
     switch (event.code) {
         case 'ArrowUp':
-            moveTo('top')
+            clearInterval(topTimer)
+            topTimer = undefined
             break;
         case 'ArrowRight':
-            moveTo('right')
+            clearInterval(rightTimer)
+            rightTimer = undefined
             break;
         case 'ArrowLeft':
-            moveTo('left')
+            clearInterval(lefTimer)
+            lefTimer = undefined
             break;
         case 'ArrowDown':
-            moveTo('bottom')
+            clearInterval(bottomTimer)
+            bottomTimer = undefined
             break;
         // Add more cases if needed for other keys
     }
