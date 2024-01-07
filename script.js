@@ -158,7 +158,7 @@ document.addEventListener('keyup', function (event) {
         () => {
             controllKeystatus[event.code] = false
         },
-        300
+        100
     )
     switch (event.code) {
         case 'ArrowUp':
@@ -189,7 +189,7 @@ var foodLeft = window.innerWidth / 2;
 var foodTop = window.innerHeight / 2;
 
 
-function displayBugg(){
+function showBuggInRandom (){
     var min = 1;
     var maxW = window.innerWidth - 30;
     var maxH = window.innerHeight - 30;
@@ -197,16 +197,26 @@ function displayBugg(){
     foodTop = Math.floor(Math.random() * (maxH - min + 1)) + min;
     const food = document.getElementById('food');
     food.style.transitionProperty = 'opacity'
-    food.style.visibility =  'visible'
+    food.style.visibility = 'visible'
     food.style.left = (foodLeft + 'px')
     food.style.top = (foodTop + 'px')
     food.style.transitionProperty = 'opacity, transform'
 
     food.style.transform = 'scale(1)'
+}
+
+function displayBugg(timeout) {
+
+    clearInterval(foodTimer)
+
+    foodTimer = setInterval(
+        showBuggInRandom, timeout
+    )
 
 }
 
-function disAppearBugg(){
+
+function disAppearBugg() {
     foodLeft = null;
     foodTop = null;
     const food = document.getElementById('food');
@@ -215,11 +225,7 @@ function disAppearBugg(){
     // food.style.visibility = 'hidden';
 }
 
-foodTimer = setInterval(
-    () => {
-        displayBugg()
-    }, 10000
-)
+
 
 setInterval(
     () => {
@@ -229,10 +235,15 @@ setInterval(
         const bottomB = topB + boxHeight;
         const rightB = leftB + boxWidth;
 
-        if((topB<foodTop&&leftB<foodLeft&&bottomB>foodTop&&rightB>foodLeft)||(topB<foodTop&&bottomB>foodTop&&rightB>foodRight&&leftB<foodRight)||(topB<foodBottom&&bottomB>foodBottom&&rightB>foodLeft&&leftB<foodLeft)||(topB<foodBottom&&bottomB>foodBottom&&rightB>foodRight&&leftB<foodRight)){
+        if ((topB < foodTop && leftB < foodLeft && bottomB > foodTop && rightB > foodLeft) || (topB < foodTop && bottomB > foodTop && rightB > foodRight && leftB < foodRight) || (topB < foodBottom && bottomB > foodBottom && rightB > foodLeft && leftB < foodLeft) || (topB < foodBottom && bottomB > foodBottom && rightB > foodRight && leftB < foodRight)) {
             disAppearBugg()
+            setTimeout(
+                showBuggInRandom,500
+            )
+            displayBugg(5000)
+            console.log('touched food')
         }
-        
+
 
         // console.log(boxRef.offsetLeft, boxRef.offsetTop)
     }, 1
