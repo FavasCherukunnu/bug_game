@@ -6,6 +6,7 @@ const foodwidth = 30;
 const foodHeight = 30;
 const boxRef = document.getElementById('box')
 let rotation = 90;
+let score=0
 
 
 const food = document.createElement('div')
@@ -241,7 +242,9 @@ setInterval(
                 showBuggInRandom,500
             )
             displayBugg(5000)
-            console.log('touched food')
+            score++;
+            document.getElementById('score').innerHTML = score
+
         }
 
 
