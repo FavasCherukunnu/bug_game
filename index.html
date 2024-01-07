@@ -11,9 +11,25 @@
 </head>
 
 <body>
-    <h3 id="score" style="text-align: center;">0</h3>
-    <div id="box"><i class='bx bxs-bug'></i></div>
 
+    <div id="errorMessage">
+        <h1>GAME OVER</h1>
+        <a href="./index.html" style="padding: 10px;cursor: pointer; color: black; background-color: white;font-size: 1rem;">Try again</a>
+    </div>
+
+    <div id="box"><i class='bx bxs-bug'></i></div>
+    <div id="topSection">
+        <h2 id="score" style="text-align: center;color: rgb(66, 0, 221);">0</h2>
+        <div style="display: flex;" class="time">
+            <h1 id="second" >
+                00
+            </h1>
+        </div>
+    </div>
+    <div id="playGround">
+
+    </div>
+    
     
     <div class="control-panel">
         <button class="btn top" onclick="moveTo('top')">&#8593;</button>
