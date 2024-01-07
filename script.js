@@ -2,9 +2,16 @@ let topB = 0, leftB = 0, bottomB = 0;
 const step = 57;
 const boxHeight = 42
 const boxWidth = 42
+const foodwidth = 30;
+const foodHeight = 30;
 const boxRef = document.getElementById('box')
 let rotation = 90;
 
+
+const food = document.createElement('div')
+food.classList.add('bug_food')
+food.id = 'food'
+document.body.appendChild(food)
 
 
 function rotateBug(step) {
@@ -59,6 +66,8 @@ function moveTo(diretion) {
         topB = 0
     }
 
+
+
     boxRef.style.left = (leftB + 'px')
     boxRef.style.top = (topB + 'px')
     boxRef.style.transform = `rotate(${rotation}deg)`
@@ -69,7 +78,7 @@ function moveTo(diretion) {
 
 let lefTimer, rightTimer, topTimer, bottomTimer;
 let statusTimer
-const controllKeystatus = {}
+let controllKeystatus = {}
 
 function isAnyControllKeyPressed() {
     for (const key in controllKeystatus) {
@@ -82,8 +91,10 @@ function isAnyControllKeyPressed() {
 }
 
 
+
+
 document.addEventListener('keydown', function (event) {
-    
+    // clearTimeout(statusTimer)
     if (isAnyControllKeyPressed()) {
         switch (event.code) {
             case 'ArrowUp':
@@ -142,9 +153,11 @@ document.addEventListener('keydown', function (event) {
 });
 
 document.addEventListener('keyup', function (event) {
-    clearTimeout(statusTimer)
-    statusTimer =  setTimeout(
-        ()=>{controllKeystatus[event.code] = false},
+    // clearTimeout(statusTimer)
+    statusTimer = setTimeout(
+        () => {
+            controllKeystatus[event.code] = false
+        },
         300
     )
     switch (event.code) {
@@ -167,6 +180,63 @@ document.addEventListener('keyup', function (event) {
         // Add more cases if needed for other keys
     }
 });
+
+
+//food
+
+let foodTimer;
+var foodLeft = window.innerWidth / 2;
+var foodTop = window.innerHeight / 2;
+
+
+function displayBugg(){
+    var min = 1;
+    var maxW = window.innerWidth - 30;
+    var maxH = window.innerHeight - 30;
+    foodLeft = Math.floor(Math.random() * (maxW - min + 1)) + min;
+    foodTop = Math.floor(Math.random() * (maxH - min + 1)) + min;
+    const food = document.getElementById('food');
+    food.style.transitionProperty = 'opacity'
+    food.style.visibility =  'visible'
+    food.style.left = (foodLeft + 'px')
+    food.style.top = (foodTop + 'px')
+    food.style.transitionProperty = 'opacity, transform'
+
+    food.style.transform = 'scale(1)'
+
+}
+
+function disAppearBugg(){
+    foodLeft = null;
+    foodTop = null;
+    const food = document.getElementById('food');
+    food.style.transitionProperty = 'opacity, transform';
+    food.style.transform = 'scale(0)';
+    // food.style.visibility = 'hidden';
+}
+
+foodTimer = setInterval(
+    () => {
+        displayBugg()
+    }, 10000
+)
+
+setInterval(
+    () => {
+        //check food eaten
+        const foodRight = foodLeft + foodwidth;
+        const foodBottom = foodTop + foodHeight;
+        const bottomB = topB + boxHeight;
+        const rightB = leftB + boxWidth;
+
+        if((topB<foodTop&&leftB<foodLeft&&bottomB>foodTop&&rightB>foodLeft)||(topB<foodTop&&bottomB>foodTop&&rightB>foodRight&&leftB<foodRight)||(topB<foodBottom&&bottomB>foodBottom&&rightB>foodLeft&&leftB<foodLeft)||(topB<foodBottom&&bottomB>foodBottom&&rightB>foodRight&&leftB<foodRight)){
+            disAppearBugg()
+        }
+        
+
+        // console.log(boxRef.offsetLeft, boxRef.offsetTop)
+    }, 1
+)
 
 
 window.addEventListener('resize', moveTo)

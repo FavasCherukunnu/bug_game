@@ -12,6 +12,7 @@ body{
 
 #box{
     /* background: green;0 */
+    z-index: 4;
     font-size: 50px;
     letter-spacing: 0;
     line-height: 0;
@@ -30,6 +31,19 @@ body{
     top: 0;
     left: 0;
     transition: 0.2s;
+}
+
+.bug_food{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: rgb(255, 0, 0);
+    background: radial-gradient(circle, rgb(255, 0, 0) 38%, rgba(140,76,171,0) 88%);    
+    height: 30px;
+    width: 30px;
+    transition-property: opacity, transform;
+    border-radius: 50%;
+    transition: 0.5s;
 }
 
 .control-panel {
