@@ -206,6 +206,8 @@ function showBuggInRandom (){
     food.style.transform = 'scale(1)'
 }
 
+
+
 function displayBugg(timeout) {
 
     clearInterval(foodTimer)
@@ -218,8 +220,8 @@ function displayBugg(timeout) {
 
 
 function disAppearBugg() {
-    foodLeft = null;
-    foodTop = null;
+    foodLeft = -1000;
+    foodTop = -1000;
     const food = document.getElementById('food');
     food.style.transitionProperty = 'opacity, transform';
     food.style.transform = 'scale(0)';
